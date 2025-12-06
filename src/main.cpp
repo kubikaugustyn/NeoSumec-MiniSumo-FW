@@ -1,5 +1,7 @@
 #include <Arduino.h>
 
+#include "RobotState.h"
+#include "StateMachine.h"
 #include "hardware/DriveBase.h"
 #include "hardware/LED.h"
 #include "hardware/Motor.h"
@@ -12,6 +14,8 @@ DriveBase drive;
 LED ledRed, ledOrange;
 QRE lineSensorLeft, lineSensorRight, lineSensorRear;
 Sharp leftProximity, rightProximity;
+
+StateMachine<RobotState> state(FORWARD);
 
 void setup() {
     Serial.begin(115200);
@@ -34,4 +38,25 @@ void setup() {
 void loop() {
     ledRed.update();
     ledOrange.update();
+    state.update();
+
+    const unsigned long stateDuration = state.getStateDuration();
+    switch (state.getState()) {
+        case FORWARD:
+            drive.driveStraight(1.0f);
+            if (lineSensorLeft.get() || lineSensorRight.get() || lineSensorRear.get()) {
+                state.setState(BACKWARD);
+            }
+            break;
+
+        case BACKWARD:
+            drive.driveStraight(-1.0f);
+            if (stateDuration > 500) state.setState(TURN);
+            break;
+
+        case TURN:
+            drive.turnLeft(1.0f);
+            if (stateDuration > 500) state.setState(FORWARD);
+            break;
+    }
 }
