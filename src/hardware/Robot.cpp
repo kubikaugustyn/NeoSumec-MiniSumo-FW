@@ -21,3 +21,8 @@ void Robot::begin() {
     leftProximity = Sharp(PIN_SHARP_LEFT);
     rightProximity = Sharp(PIN_SHARP_RIGHT);
 }
+
+void Robot::update() {
+    ledRed.update();
+    ledOrange.update();
+}

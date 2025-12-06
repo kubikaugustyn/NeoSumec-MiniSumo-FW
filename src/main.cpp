@@ -10,7 +10,8 @@ void setup() {
 }
 
 void loop() {
-    robot.ledRed.update();
-    robot.ledOrange.update();
+    // Update the hardware
+    robot.update();
+    // Update the state/strategy
     state.update();
 }

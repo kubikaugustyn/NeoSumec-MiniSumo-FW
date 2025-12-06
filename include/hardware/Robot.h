@@ -21,4 +21,6 @@ public:
     Robot() = default;
 
     void begin();
+
+    void update();
 };
