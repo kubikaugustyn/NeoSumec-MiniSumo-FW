@@ -16,7 +16,7 @@ Motor::Motor(const uint8_t sleepPin, const uint8_t enablePin, const uint8_t phas
 
     // set nSLEEP pin
     pinMode(sleepPin, OUTPUT);
-    digitalWrite(sleepPin, 1);
+    digitalWrite(sleepPin, HIGH);
 
     // set PH pin
     pinMode(phasePin, OUTPUT);
@@ -41,20 +41,12 @@ void Motor::stop() const {
     drive(0.0f);
 }
 
-/*void Motor::setSpeed(float speed) const {
-    // TO DO: limit setpoint to 0..1
-
-    // ledcWrite(mChannel, speed*(float)PWM_MAX_VALUE);
-
-    ledcWrite(channel, speed * 255);
-}*/
-
 void Motor::drive(float speed) const {
     // Clamp speed to -1..1
     if (speed > 1.0f) speed = 1.0f;
     if (speed < -1.0f) speed = -1.0f;
 
-    // Motor awake
+    // Ensure the motor is awake
     digitalWrite(sleepPin, HIGH);
 
     // Stop / brake
@@ -64,7 +56,7 @@ void Motor::drive(float speed) const {
     }
 
     // Direction: PH = 1 forward, PH = 0 backward
-    digitalWrite(phasePin, speed > 0);
+    digitalWrite(phasePin, speed > 0 ? HIGH : LOW);
 
     // PWM magnitude
     const uint32_t duty = static_cast<uint32_t>(fabs(speed) * PWM_MAX_VALUE);
