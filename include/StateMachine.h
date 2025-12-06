@@ -4,24 +4,52 @@
 //
 
 #pragma once
-#include <Arduino.h>
+#include "hardware/Robot.h"
 
-template<typename T>
-class StateMachine {
-private:
-    T currentState;
-    unsigned long stateStartTime;
+//---------------- State Forward Declaration ----------------
+class StateMachine;
+
+//---------------- Abstract State Class ----------------
+class State {
+protected:
+    StateMachine &machine;
+    Robot &robot;
+
+    State(StateMachine &m, Robot &r) : machine(m), robot(r) {
+    }
 
 public:
-    StateMachine() = default;
+    State() = delete;
 
-    explicit StateMachine(T initialState);
+    virtual ~State() = default;
 
-    void setState(T newState);
+    virtual void enter() = 0;
 
-    T getState() const;
+    virtual void update() = 0;
+
+    virtual void exit() = 0;
+};
+
+//---------------- State Machine ----------------
+class StateMachine {
+    Robot &robot;
+    State *currentState = nullptr;
+    unsigned long stateStartTime = 0, currentStateDuration = 0;
+
+public:
+    StateMachine() = delete;
+
+    explicit StateMachine(Robot &r) : robot(r) {
+    }
+
+    template<typename StateType>
+    void setState();
+
+    void clearState();
+
+    void update();
 
     unsigned long getStateDuration() const;
 
-    void update();
+    State *getState() const;
 };

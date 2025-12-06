@@ -5,32 +5,36 @@
 
 #include "StateMachine.h"
 
-template<typename T>
-StateMachine<T>::StateMachine(T initialState) {
-    setState(initialState);
-}
+template<typename StateType>
+void StateMachine::setState() {
+    static_assert(std::is_base_of<State, StateType>::value, "StateType must derive from State");
 
-template<typename T>
-void StateMachine<T>::setState(T newState) {
-    currentState = newState;
+    if (currentState) currentState->exit();
+
+    static StateType stateInstance(*this, robot);
+    currentState = &stateInstance;
+
     stateStartTime = millis();
+    currentState->enter();
 }
 
-template<typename T>
-T StateMachine<T>::getState() const {
+void StateMachine::clearState() {
+    if (!currentState) return;
+
+    currentState->exit();
+    stateStartTime = millis();
+    currentState = nullptr;
+}
+
+void StateMachine::update() {
+    if (currentState) currentState->update();
+    currentStateDuration = millis() - stateStartTime;
+}
+
+unsigned long StateMachine::getStateDuration() const {
+    return currentStateDuration;
+}
+
+State *StateMachine::getState() const {
     return currentState;
 }
-
-template<typename T>
-unsigned long StateMachine<T>::getStateDuration() const {
-    return millis() - stateStartTime;
-}
-
-template<typename T>
-void StateMachine<T>::update() {
-    // Future debug or other things
-}
-
-// Explicit instantiation for RobotState
-#include "RobotState.h"
-template class StateMachine<RobotState>;

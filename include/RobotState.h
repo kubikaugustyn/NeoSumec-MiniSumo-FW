@@ -4,5 +4,34 @@
 //
 
 #pragma once
+#include "StateMachine.h"
 
-enum RobotState { FORWARD, BACKWARD, TURN };
+class BaseState : public State {
+public:
+    BaseState(StateMachine &m, Robot &r) : State(m, r) {
+    }
+};
+
+class DriveForwardState : public BaseState {
+    using BaseState::BaseState;
+
+    void enter() override;
+
+    void update() override;
+};
+
+class DriveBackwardState : public BaseState {
+    using BaseState::BaseState;
+
+    void enter() override;
+
+    void update() override;
+};
+
+class TurnState : public BaseState {
+    using BaseState::BaseState;
+
+    void enter() override;
+
+    void update() override;
+};
