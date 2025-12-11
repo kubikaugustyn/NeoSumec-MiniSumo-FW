@@ -4,6 +4,7 @@
 //
 
 #pragma once
+
 #include "StateMachine.h"
 
 class BaseState : public State {
@@ -18,6 +19,8 @@ class DriveForwardState : public BaseState {
     void enter() override;
 
     void update() override;
+
+    void exit() override {};
 };
 
 class DriveBackwardState : public BaseState {
@@ -26,6 +29,8 @@ class DriveBackwardState : public BaseState {
     void enter() override;
 
     void update() override;
+
+    void exit() override {};
 };
 
 class TurnState : public BaseState {
@@ -34,4 +39,6 @@ class TurnState : public BaseState {
     void enter() override;
 
     void update() override;
+
+    void exit() override {};
 };

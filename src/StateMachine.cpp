@@ -4,6 +4,7 @@
 //
 
 #include "StateMachine.h"
+#include "RobotState.h"
 
 template<typename StateType>
 void StateMachine::setState() {
@@ -38,3 +39,9 @@ unsigned long StateMachine::getStateDuration() const {
 State *StateMachine::getState() const {
     return currentState;
 }
+
+// We must define all the possible states for the compiler
+// TODO Does it have to be here? Or could it be in RobotState.h/.cpp?
+template void StateMachine::setState<DriveForwardState>();
+template void StateMachine::setState<DriveBackwardState>();
+template void StateMachine::setState<TurnState>();
