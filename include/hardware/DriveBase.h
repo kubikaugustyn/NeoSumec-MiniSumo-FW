@@ -1,6 +1,6 @@
 //
 // Created by Jakub Augustýn on 05.12.2025.
-// Copyright (c) 2025 Jakub Augustýn. All rights reserved.
+// Copyright (c) 2026 Jakub Augustýn. All rights reserved.
 //
 // Inspired by:
 // https://github.com/NataniSi/Sumec-MiniSumo-SW/blob/main/main_sw/MAIN_CODE/include/Motion.h
@@ -65,6 +65,18 @@ public:
     * @param turningSpeed Desired turning speed of the robot (between -1.0 and 1.0). Negative values mean turning right.
     */
     void turn(float speed, float turningSpeed) const;
+
+    /**
+    * @brief Turns the robot left in-place, spinning the wheels in opposite directions.
+    * @param speed Desired speed of the robot (between 0.0 and 1.0).
+    */
+    void turnLeftTank(float speed) const;
+
+    /**
+    * @brief Turns the robot right in-place, spinning the wheels in opposite directions.
+    * @param speed Desired speed of the robot (between 0.0 and 1.0).
+    */
+    void turnRightTank(float speed) const;
 
     /**
     * @brief Stops the robot.

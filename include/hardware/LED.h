@@ -17,7 +17,7 @@ private:
     uint32_t lastMillis = 0;
     Mode mode = OFF;
     uint8_t state = LOW;
-    uint32_t timeOn, timeOff;
+    uint32_t timeOn = 0, timeOff = 0;
 
 public:
     LED() = default;
