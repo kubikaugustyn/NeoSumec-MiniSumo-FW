@@ -9,7 +9,7 @@
 #ifndef NEOSUMEC_SW_DRIVEBASE_H
 #define NEOSUMEC_SW_DRIVEBASE_H
 #include <Arduino.h>
-#include <hardware/Motor.h>
+#include "hardware/Motor.h"
 
 /**
  * @brief A simple DriveBase class to move the robot forward/backward/left/right with the given velocity.

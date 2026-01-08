@@ -4,6 +4,9 @@
 //
 
 #include "hardware/Robot.h"
+
+#include <Wire.h>
+
 #include "hardware/Pins.h"
 
 void Robot::begin() {
@@ -17,9 +20,18 @@ void Robot::begin() {
     lineSensorLeft = QRE(PIN_QRE_LEFT);
     lineSensorRight = QRE(PIN_QRE_RIGHT);
     lineSensorRear = QRE(PIN_QRE_REAR);
+    // FIXME Do we want this?
+    // https://github.com/NataniSi/Sumec-MiniSumo-SW/blob/37f0c36fc5ec6d57ca9154137380c8463f6ad914/main_sw/MAIN_CODE/src/main.cpp#L60-L61
+    // lineSensorLeft.setThreshold(1800);
+    // lineSensorRight.setThreshold(1800);
 
     leftProximity = Sharp(PIN_SHARP_LEFT);
     rightProximity = Sharp(PIN_SHARP_RIGHT);
+
+    Wire.begin(PIN_I2C_SDA,PIN_I2C_SCL,I2C_FREQUENCY); // Setup I2C for Luna sensors
+    frontLeftDistance = Luna(I2C_ADDRESS_LUNA_LEFT);
+    frontMiddleDistance = Luna(I2C_ADDRESS_LUNA_MIDDLE);
+    frontRightDistance = Luna(I2C_ADDRESS_LUNA_RIGHT);
 }
 
 void Robot::update() {

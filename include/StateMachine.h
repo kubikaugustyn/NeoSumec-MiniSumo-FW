@@ -4,6 +4,9 @@
 //
 
 #pragma once
+#include <cstdint>
+#include <cstddef>
+#include <type_traits>
 #include "hardware/Robot.h"
 
 //---------------- State Forward Declaration ----------------
@@ -51,6 +54,8 @@ class StateMachine {
     Robot &robot;
     // The next state contains a pointer to the current state unless a transition is requested
     State *currentState = nullptr, *nextState = nullptr;
+    // Scratch buffer, shared for all states
+    alignas(std::max_align_t) uint8_t scratch[64]{};
     unsigned long stateStartTime = 0, currentStateDuration = 0;
 
 public:
@@ -101,6 +106,14 @@ public:
      * calls the current state's `update()` method.
      */
     void update();
+
+    // Funkce, která vezme typ a vrátí reference na něj z bufferu
+    template<typename T>
+    T &scratchRef() {
+        static_assert(sizeof(T) <= sizeof(scratch), "Type too big for scratch buffer");
+        static_assert(alignof(T) <= alignof(std::max_align_t), "Alignment too strict for scratch buffer");
+        return *reinterpret_cast<T *>(scratch);
+    }
 
     /**
      * @brief Returns the duration of the current state in milliseconds.

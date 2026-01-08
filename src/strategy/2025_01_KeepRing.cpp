@@ -8,8 +8,6 @@
 
 #ifdef STRATEGY_NEOSUMEC_2025_01_KEEP_RING
 
-// We must define all the possible states for the compiler
-
 void DriveForwardState::enter() {
     robot.drive.driveStraight(1.0f);
 }
