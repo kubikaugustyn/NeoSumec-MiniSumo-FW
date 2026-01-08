@@ -1,6 +1,6 @@
 //
 // Created by Jakub Augustýn on 05.12.2025.
-// Copyright (c) 2025 Jakub Augustýn. All rights reserved.
+// Copyright (c) 2026 Jakub Augustýn. All rights reserved.
 //
 // Inspired by:
 // https://github.com/NataniSi/Sumec-MiniSumo-SW/blob/main/main_sw/MAIN_CODE/include/Motion.h
@@ -61,6 +61,20 @@ void DriveBase::turn(float speed, float turningSpeed) const {
 
     leftMotor.drive(speed + d);
     rightMotor.drive(speed - d);
+}
+
+void DriveBase::turnLeftTank(float speed) const {
+    speed = clampNormal(speed);
+
+    leftMotor.drive(-speed);
+    rightMotor.drive(speed);
+}
+
+void DriveBase::turnRightTank(float speed) const {
+    speed = clampNormal(speed);
+
+    leftMotor.drive(speed);
+    rightMotor.drive(-speed);
 }
 
 void DriveBase::stop() const {
