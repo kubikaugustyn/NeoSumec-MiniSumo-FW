@@ -3,12 +3,11 @@
 // Copyright (c) 2025 Jakub Augustýn. All rights reserved.
 //
 
-#ifndef NEOSUMEC_SW_PINS_H
-#define NEOSUMEC_SW_PINS_H
+#pragma once
+#include <MainConfig.h> // Required to "load" the current pinout
 
 // ===== MK5 pins =====
-#define NEOSUMEC_PINS_MK5
-#ifdef NEOSUMEC_PINS_MK5
+#ifdef PINOUT_NEOSUMEC_PINS_MK5
 // H-bridge pins
 #define PIN_MOTOR_LEFT_NSLEEP   11
 #define PIN_MOTOR_LEFT_ENABLE   14
@@ -33,7 +32,5 @@
 #define PIN_IR                  38
 // BUTTON
 #define PIN_BUTTON              2
-#endif // NEOSUMEC_PINS_MK5
+#endif // PINOUT_NEOSUMEC_PINS_MK5
 // ===== MK5 pins end =====
-
-#endif //NEOSUMEC_SW_PINS_H

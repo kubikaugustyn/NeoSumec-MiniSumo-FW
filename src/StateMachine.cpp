@@ -4,32 +4,27 @@
 //
 
 #include "StateMachine.h"
-#include "RobotState.h"
-
-template<typename StateType>
-void StateMachine::setState() {
-    static_assert(std::is_base_of<State, StateType>::value, "StateType must derive from State");
-
-    if (currentState) currentState->exit();
-
-    static StateType stateInstance(*this, robot);
-    currentState = &stateInstance;
-
-    stateStartTime = millis();
-    currentState->enter();
-}
 
 void StateMachine::clearState() {
-    if (!currentState) return;
-
-    currentState->exit();
-    stateStartTime = millis();
-    currentState = nullptr;
+    nextState = nullptr;
 }
 
 void StateMachine::update() {
-    if (currentState) currentState->update();
+    // Apply the scheduled state
+    if (nextState != currentState) {
+        // Exit() the current (now old) state
+        // Very important: don't deallocate!!! The states are static objects at compile-time!
+        if (currentState) currentState->exit();
+
+        // Enter() the new state
+        currentState = nextState;
+        stateStartTime = millis();
+        if (currentState) currentState->enter();
+    }
+
+    // Update() the current state
     currentStateDuration = millis() - stateStartTime;
+    if (currentState) currentState->update();
 }
 
 unsigned long StateMachine::getStateDuration() const {
@@ -40,8 +35,6 @@ State *StateMachine::getState() const {
     return currentState;
 }
 
-// We must define all the possible states for the compiler
-// TODO Does it have to be here? Or could it be in RobotState.h/.cpp?
-template void StateMachine::setState<DriveForwardState>();
-template void StateMachine::setState<DriveBackwardState>();
-template void StateMachine::setState<TurnState>();
+State *StateMachine::getNextState() const {
+    return nextState;
+}

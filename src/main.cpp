@@ -4,8 +4,9 @@
 //
 
 #include <Arduino.h>
+
+#include "MainConfig.h"
 #include "StateMachine.h"
-#include "RobotState.h"
 
 auto robot = Robot();
 auto state = StateMachine(robot);
@@ -15,26 +16,16 @@ void setup() {
     robot.begin();
 
     // Set the first state
-    state.setState<DriveForwardState>();
+    state.setState<STRATEGY_INITIAL_STATE>();
 
     // Temporary: blink the LEDs to confirm the uploads actually work
     robot.ledRed.blink(500);
     robot.ledOrange.blink(1000);
 }
 
-void debugLoop();
-
 void loop() {
     // Update the hardware
     robot.update();
     // Update the state/strategy
     state.update();
-
-    // debugLoop();
-}
-
-void debugLoop() {
-    Serial.printf("Rear %d Left %d Right %d\n", robot.lineSensorRear.get(), robot.lineSensorLeft.get(),
-                  robot.lineSensorRight.get());
-    delay(500);
 }

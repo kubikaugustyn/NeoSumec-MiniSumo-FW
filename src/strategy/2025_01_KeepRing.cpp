@@ -1,17 +1,17 @@
 //
-// Created by Jakub Augustýn on 06.12.2025.
+// Created by Jakub Augustýn on 08.01.2026.
 // Copyright (c) 2026 Jakub Augustýn. All rights reserved.
 //
 
-#include "RobotState.h"
+#include <MainConfig.h>
+#include <strategy/2025_01_KeepRing.h>
 
-// #define DEBUG_SPEED_SCALING 0.5f
-// #define DEBUG_TIME_SCALING 2
-#define DEBUG_SPEED_SCALING 1.0f
-#define DEBUG_TIME_SCALING 1
+#ifdef STRATEGY_NEOSUMEC_2025_01_KEEP_RING
+
+// We must define all the possible states for the compiler
 
 void DriveForwardState::enter() {
-    robot.drive.driveStraight(1.0f * DEBUG_SPEED_SCALING);
+    robot.drive.driveStraight(1.0f);
 }
 
 void DriveForwardState::update() {
@@ -22,22 +22,24 @@ void DriveForwardState::update() {
 
 
 void DriveBackwardState::enter() {
-    robot.drive.driveStraight(-1.0f * DEBUG_SPEED_SCALING);
+    robot.drive.driveStraight(-1.0f);
 }
 
 void DriveBackwardState::update() {
-    if (machine.getStateDuration() > 100 * DEBUG_TIME_SCALING) {
+    if (machine.getStateDuration() > 100) {
         machine.setState<TurnState>();
     }
 }
 
 
 void TurnState::enter() {
-    robot.drive.turnRightTank(1.0f * DEBUG_SPEED_SCALING);
+    robot.drive.turnRightTank(1.0f);
 }
 
 void TurnState::update() {
-    if (machine.getStateDuration() > 300 * DEBUG_TIME_SCALING) {
+    if (machine.getStateDuration() > 300) {
         machine.setState<DriveForwardState>();
     }
 }
+
+#endif // STRATEGY_NEOSUMEC_2025_01_KEEP_RING

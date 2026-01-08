@@ -1,17 +1,13 @@
 //
-// Created by Jakub Augustýn on 06.12.2025.
-// Copyright (c) 2025 Jakub Augustýn. All rights reserved.
+// Created by Jakub Augustýn on 08.01.2026.
+// Copyright (c) 2026 Jakub Augustýn. All rights reserved.
 //
 
 #pragma once
+#include <StateMachine.h>
 
-#include "StateMachine.h"
-
-class BaseState : public State {
-public:
-    BaseState(StateMachine &m, Robot &r) : State(m, r) {
-    }
-};
+#ifdef STRATEGY_NEOSUMEC_2025_01_KEEP_RING
+#define STRATEGY_INITIAL_STATE DriveForwardState
 
 class DriveForwardState : public BaseState {
     using BaseState::BaseState;
@@ -42,3 +38,5 @@ class TurnState : public BaseState {
 
     void exit() override {};
 };
+
+#endif // STRATEGY_NEOSUMEC_2025_01_KEEP_RING
