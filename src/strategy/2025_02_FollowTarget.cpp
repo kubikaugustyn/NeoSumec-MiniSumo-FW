@@ -2,6 +2,7 @@
 // Created by Jakub Augustýn on 08.01.2026.
 // Copyright (c) 2026 Jakub Augustýn. All rights reserved.
 //
+// AI slop ahead, don't read!!!
 
 #include <MainConfig.h>
 #include <strategy/2025_02_FollowTarget.h>
@@ -9,8 +10,11 @@
 #ifdef STRATEGY_NEOSUMEC_2025_02_FOLLOW_TARGET
 
 void EntryState::enter() {
+    // Intended for also being able to prepare the scratch memory first. It may be a good idea to somehow make the scratch system more robust, such as requiring a callback that would write to the scratch for the setState method for certain states? I'm not sure, we don't want to waste memory though.
     machine.setState<FollowOpponentState>();
 }
+
+// AI slop ahead, don't read!!!
 
 void SearchForOpponentState::update() {
     auto &scratch = machine.scratchRef<FollowScratch>();
