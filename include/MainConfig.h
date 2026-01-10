@@ -13,8 +13,8 @@
 
 // The strategy to use
 // #define STRATEGY_NEOSUMEC_2025_01_KEEP_RING
-#define STRATEGY_NEOSUMEC_2025_02_FOLLOW_TARGET
+#define STRATEGY_NEOSUMEC_2026_01_FOLLOW_TARGET
 
 // Include all strategy headers. Only the single one enabled above will be compiled and used.
 #include "strategy/2025_01_KeepRing.h"
-#include "strategy/2025_02_FollowTarget.h"
+#include "strategy/2026_01_FollowTarget.h"

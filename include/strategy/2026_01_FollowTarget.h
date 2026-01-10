@@ -6,11 +6,12 @@
 #pragma once
 #include "StateMachine.h"
 
-#ifdef STRATEGY_NEOSUMEC_2025_02_FOLLOW_TARGET
+#ifdef STRATEGY_NEOSUMEC_2026_01_FOLLOW_TARGET
 #define STRATEGY_INITIAL_STATE EntryState
+#define INTERRUPT_RETURN_STATE EntryState
 #define LUNA_RING_THRESHOLD 60 // cm
 
-class EntryState : public BaseState {
+class EntryState final : public BaseState {
     using BaseState::BaseState;
 
     void enter() override;
@@ -20,13 +21,7 @@ class EntryState : public BaseState {
     void exit() override {}
 };
 
-struct FollowScratch {
-    bool targetLastSeenOnTheLeft = true;  // poslední poloha cíle
-    uint16_t lastDistance = 0;            // poslední vzdálenost k cíli
-    bool previousLeftRight = true;        // směr, kterým se cíl pohyboval naposledy
-};
-
-class SearchForOpponentState : public BaseState {
+class SearchForOpponentState final : public BaseState {
     using BaseState::BaseState;
 
     void enter() override {}
@@ -36,7 +31,7 @@ class SearchForOpponentState : public BaseState {
     void exit() override {}
 };
 
-class FollowOpponentState : public BaseState {
+class FollowOpponentState final : public BaseState {
     using BaseState::BaseState;
 
     void enter() override {}
@@ -46,4 +41,4 @@ class FollowOpponentState : public BaseState {
     void exit() override {}
 };
 
-#endif // STRATEGY_NEOSUMEC_2025_02_FOLLOW_TARGET
+#endif // STRATEGY_NEOSUMEC_2026_01_FOLLOW_TARGET

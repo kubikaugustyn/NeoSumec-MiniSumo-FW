@@ -4,9 +4,11 @@
 //
 
 #include "StateMachine.h"
+#include "strategy/interrupts/interrupts.h"
 
 void StateMachine::clearState() {
     nextState = nullptr;
+    nextStateCallback = nullptr;
 }
 
 void StateMachine::update() {
@@ -20,6 +22,16 @@ void StateMachine::update() {
         currentState = nextState;
         stateStartTime = millis();
         if (currentState) currentState->enter();
+        if (nextStateCallback) {
+            nextStateCallback(this);
+            nextStateCallback = nullptr;
+        }
+    }
+
+    // Check for interrupts
+    if (enableInterrupts && processInterrupts(this)) {
+        // Some interrupt called setState(). Immediately exit and wait for the next `update()` call.
+        return;
     }
 
     // Update() the current state

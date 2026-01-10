@@ -8,6 +8,8 @@
 
 #include "hardware/Luna.h"
 
+TFLI2C Luna::tflI2C{}; // Construct the object
+
 Luna::Luna(const uint8_t i2cAddress) {
     address = i2cAddress;
 }

@@ -52,8 +52,14 @@ public:
 //---------------------- State Machine ----------------------
 class StateMachine {
     Robot &robot;
-    // The next state contains a pointer to the current state unless a transition is requested
-    State *currentState = nullptr, *nextState = nullptr;
+    State *currentState = nullptr;
+    // The next state contains a pointer to the current state unless a transition is requested.
+    // This is to allow for a null state without adding a bool to tell us a transition is requested.
+    State *nextState = nullptr;
+    using Callback = void (*)(StateMachine *);
+    Callback nextStateCallback = nullptr; // Called after the state is changed
+    // Should the state machine use interrupts?
+    bool enableInterrupts = true;
     // Scratch buffer, shared for all states
     alignas(std::max_align_t) uint8_t scratch[64]{};
     unsigned long stateStartTime = 0, currentStateDuration = 0;
@@ -62,6 +68,44 @@ public:
     StateMachine() = delete;
 
     explicit StateMachine(Robot &r) : robot(r) {
+    }
+
+    /**
+     * This function disables interrupts. It must only be called from an interrupt's `enter()` method.
+     */
+    void markEnteredInterrupt() {
+        enableInterrupts = false;
+    }
+
+    /**
+     * This function enables interrupts. It must only be called from an interrupt's `exit()` method.
+     */
+    void markExitedInterrupt() {
+        enableInterrupts = true;
+    }
+
+    /**
+     * @brief Sets the next state of the state machine.
+     *
+     * Creates a static instance of the specified state type and schedules it as the next state.
+     * The transition will occur during the next update() call.
+     *
+     * The static instance ensures that we don't create new instances of states during runtime;
+     * all states exist as static objects created at compile-time.
+     *
+     * @tparam StateType The type of the state to transition to. Must be derived from the State class.
+     * @param callback The callback to be called after the state transition is complete. Use it to update the scratch.
+     */
+    template<typename StateType>
+    void setState(const Callback callback) {
+        // This template function must be defined here in the header, otherwise the compiler will complain
+        static_assert(std::is_base_of<State, StateType>::value, "StateType must derive from State");
+
+        static StateType stateInstance(*this, robot);
+
+        // Schedule the next state (for the next call of update())
+        nextState = &stateInstance;
+        nextStateCallback = callback;
     }
 
     /**
@@ -77,13 +121,7 @@ public:
      */
     template<typename StateType>
     void setState() {
-        // This template function must be defined here in the header, otherwise the compiler will complain
-        static_assert(std::is_base_of<State, StateType>::value, "StateType must derive from State");
-
-        static StateType stateInstance(*this, robot);
-
-        // Schedule the next state (for the next call of update())
-        nextState = &stateInstance;
+        setState<StateType>(nullptr);
     }
 
     /**
@@ -107,7 +145,21 @@ public:
      */
     void update();
 
-    // Funkce, která vezme typ a vrátí reference na něj z bufferu
+    /**
+     * @brief Gets a reference to the scratch buffer interpreted as type T.
+     *
+     * The scratch buffer contains a shared state of the state machine, as a 64-byte buffer.
+     * You can use it to store values between `update()` calls of your State class.
+     * The buffer is never cleared.
+     *
+     * Provides type-safe access to the scratch buffer by casting it to the requested type.
+     * The method includes compile-time checks to ensure the requested type:
+     * - Fits within the scratch buffer size
+     * - Has alignment requirements compatible with the buffer
+     *
+     * @tparam T The type to interpret the scratch buffer as
+     * @return Reference to the scratch buffer as type T
+     */
     template<typename T>
     T &scratchRef() {
         static_assert(sizeof(T) <= sizeof(scratch), "Type too big for scratch buffer");
@@ -145,4 +197,6 @@ public:
      * @return A pointer to the expected next State object, or nullptr if no state is set.
      */
     State *getNextState() const;
+
+    Robot &getRobot() const { return robot; }
 };
