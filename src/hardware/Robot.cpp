@@ -17,6 +17,8 @@ void Robot::begin() {
     ledRed = LED(PIN_LED_RED);
     ledOrange = LED(PIN_LED_ORANGE);
 
+    startButton = Button(PIN_BUTTON);
+
     lineSensorLeft = QRE(PIN_QRE_LEFT);
     lineSensorRight = QRE(PIN_QRE_RIGHT);
     lineSensorRear = QRE(PIN_QRE_REAR);

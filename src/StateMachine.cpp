@@ -31,6 +31,9 @@ void StateMachine::update() {
     // Check for interrupts
     if (enableInterrupts && processInterrupts(this)) {
         // Some interrupt called setState(). Immediately exit and wait for the next `update()` call.
+#ifdef DEBUG_LOGGING
+        Serial.println("StateMachine::update(): Received interrupt.");
+#endif
         return;
     }
 

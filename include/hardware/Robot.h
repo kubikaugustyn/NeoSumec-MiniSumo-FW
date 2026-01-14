@@ -4,6 +4,7 @@
 //
 
 #pragma once
+#include "Button.h"
 #include "hardware/DriveBase.h"
 #include "hardware/LED.h"
 #include "hardware/Motor.h"
@@ -16,6 +17,7 @@ public:
     Motor leftMotor, rightMotor;
     DriveBase drive;
     LED ledRed, ledOrange;
+    Button startButton;
     // QRE bottom line sensors
     QRE lineSensorLeft, lineSensorRight, lineSensorRear;
     // Sharp side proximity sensors

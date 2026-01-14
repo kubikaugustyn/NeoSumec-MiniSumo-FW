@@ -5,6 +5,9 @@
 
 #pragma once
 
+// Uncomment to enable debug logging
+#define DEBUG_LOGGING
+
 // Hardware to build for - enables different pin definitions
 // Pins are then defined in include/hardware/Pins.h
 #define PINOUT_NEOSUMEC_PINS_MK5
