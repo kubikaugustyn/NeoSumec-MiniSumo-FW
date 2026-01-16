@@ -8,11 +8,13 @@
 
 #include "hardware/Motor.h"
 
-Motor::Motor(const uint8_t sleepPin, const uint8_t enablePin, const uint8_t phasePin, const uint8_t channel) {
+Motor::Motor(const uint8_t sleepPin, const uint8_t enablePin, const uint8_t phasePin, const uint8_t channel,
+             const float speedMultiplier) {
     this->sleepPin = sleepPin;
     this->enablePin = enablePin;
     this->phasePin = phasePin;
     this->channel = channel;
+    this->speedMultiplier = speedMultiplier;
 
     // set nSLEEP pin
     pinMode(sleepPin, OUTPUT);
@@ -45,6 +47,8 @@ void Motor::drive(float speed) const {
     // Clamp speed to -1..1
     if (speed > 1.0f) speed = 1.0f;
     if (speed < -1.0f) speed = -1.0f;
+
+    speed *= speedMultiplier;
 
     // Ensure the motor is awake
     digitalWrite(sleepPin, HIGH);

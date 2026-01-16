@@ -7,3 +7,7 @@
 #include "MainConfig.h" // Don't remove!
 
 bool processInterrupts(StateMachine *machine);
+
+struct InterruptResultData {
+    InterruptCause cause;
+};

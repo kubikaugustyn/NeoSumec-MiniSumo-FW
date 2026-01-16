@@ -12,6 +12,10 @@
 //---------------- State Forward Declaration ----------------
 class StateMachine;
 
+// I don't like the compiler...
+// FIXME Move it back to strategy/interrupts/interrupts.h
+enum InterruptCause { LEFT_QRE, RIGHT_QRE };
+
 //------------------ Abstract State Class  ------------------
 class State {
 protected:
@@ -73,16 +77,12 @@ public:
     /**
      * This function disables interrupts. It must only be called from an interrupt's `enter()` method.
      */
-    void markEnteredInterrupt() {
-        enableInterrupts = false;
-    }
+    void markEnteredInterrupt(InterruptCause cause);
 
     /**
      * This function enables interrupts. It must only be called from an interrupt's `exit()` method.
      */
-    void markExitedInterrupt() {
-        enableInterrupts = true;
-    }
+    void markExitedInterrupt();
 
     /**
      * @brief Sets the next state of the state machine.

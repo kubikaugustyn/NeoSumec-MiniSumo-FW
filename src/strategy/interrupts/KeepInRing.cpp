@@ -18,7 +18,7 @@ bool processKeepInRingInterrupt(StateMachine *machine) {
 }
 
 void InterruptKeepInRingState::enter() {
-    machine.markEnteredInterrupt();
+    machine.markEnteredInterrupt(robot.lineSensorLeft.get() ? InterruptCause::LEFT_QRE : InterruptCause::RIGHT_QRE);
 
     robot.drive.driveStraight(-1.0f);
 }

@@ -36,13 +36,12 @@ private:
     uint8_t enablePin; // EN/IN1 pin
     uint8_t phasePin; // PH/IN2 pin
     uint8_t channel;
-    uint8_t resolution;
-    uint32_t frequency;
+    float speedMultiplier = 1.0;
 
 public:
     Motor() = default;
 
-    Motor(uint8_t sleepPin, uint8_t enablePin, uint8_t phasePin, uint8_t channel);
+    Motor(uint8_t sleepPin, uint8_t enablePin, uint8_t phasePin, uint8_t channel, float speedMultiplier = 1.0);
 
     void goForward() const;
 
