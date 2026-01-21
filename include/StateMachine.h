@@ -14,7 +14,7 @@ class StateMachine;
 
 // I don't like the compiler...
 // FIXME Move it back to strategy/interrupts/interrupts.h
-enum InterruptCause { LEFT_QRE, RIGHT_QRE };
+enum InterruptCause { START_ROBOT, LEFT_QRE, RIGHT_QRE, REAR_QRE };
 
 //------------------ Abstract State Class  ------------------
 class State {

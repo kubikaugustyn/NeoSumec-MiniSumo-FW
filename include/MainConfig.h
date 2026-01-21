@@ -7,6 +7,8 @@
 
 // Uncomment to enable debug logging
 #define DEBUG_LOGGING
+// The noop time after pressing the start button
+#define START_BUTTON_DELAY 5000
 
 // Hardware to build for - enables different pin definitions
 // Pins are then defined in include/hardware/Pins.h

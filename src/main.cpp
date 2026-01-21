@@ -7,6 +7,7 @@
 
 #include "MainConfig.h"
 #include "StateMachine.h"
+#include "strategy/interrupts/StartRobot.h"
 
 auto robot = Robot();
 auto state = StateMachine(robot);
@@ -18,7 +19,7 @@ void setup() {
     robot.begin();
 
     // Set the first state
-    state.setState<STRATEGY_INITIAL_STATE>();
+    state.setState<InterruptStartRobotState>();
 }
 
 void loop() {
