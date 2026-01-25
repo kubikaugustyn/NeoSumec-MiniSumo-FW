@@ -25,8 +25,9 @@ Motor::Motor(const uint8_t sleepPin, const uint8_t enablePin, const uint8_t phas
     goForward();
 
     // set EN pin
-    ledcAttachPin(enablePin, channel);
+    // LEDC setup order is important!
     ledcSetup(channel, PWM_FREQUENCY, PWM_RESOLUTION);
+    ledcAttachPin(enablePin, channel);
 
     stop();
 }

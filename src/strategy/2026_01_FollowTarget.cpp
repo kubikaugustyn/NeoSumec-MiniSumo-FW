@@ -6,6 +6,7 @@
 #include <MainConfig.h>
 #include <strategy/2026_01_FollowTarget.h>
 
+#include "strategy/debug/logging.h"
 #include "strategy/interrupts/interrupts.h"
 
 #ifdef STRATEGY_NEOSUMEC_2026_01_FOLLOW_TARGET
@@ -14,17 +15,14 @@
 //    machine->scratchRef<SomeScratch>().a = 0;
 // });
 
-bool MOVE = true; // FIXME Tmp
-
 void EntryState::enter() {
     Serial.println("Enter");
-    if (MOVE) robot.drive.driveStraight(1.0f);
+    robot.drive.driveStraight(1.0f);
 }
 
 void EntryState::update() {
     if (machine.getStateDuration() < 300) return;
     machine.setState<SearchForOpponentState>();
-    if (!MOVE) machine.setState<FollowOpponentState>();
 }
 
 void BackOffEdgeState::enter() {
@@ -86,32 +84,32 @@ void FollowOpponentState::update() {
             middleContact = middle == 0xFFFF,
             rightContact = right == 0xFFFF;
 
-    // Serial.printf("Search: %d %d %d\n", left, middle, right);
-    Serial.printf("Search: %d %d %d\n", leftOOB, middleOOB, rightOOB);
+    // LOG_DEBUG_PRINTF("Search: %d %d %d\n", left, middle, right);
+    LOG_DEBUG_PRINTF("Search: %d %d %d", leftOOB, middleOOB, rightOOB);
 
     bool lost = false;
     if ((leftOOB && rightOOB && !middleOOB) || middleContact) {
-        Serial.println("Drive forward!");
-        if (MOVE) robot.drive.driveStraight(1.0f);
+        LOG_DEBUG_PRINTF("Drive forward!");
+        robot.drive.driveStraight(1.0f);
     } else if ((!leftOOB && rightOOB) || leftContact) {
-        Serial.println("Turn left!");
-        if (MOVE) robot.drive.turnLeft(1.0f, 1.0f);
+        LOG_DEBUG_PRINTF("Turn left!");
+        robot.drive.turnLeft(1.0f, 1.0f);
     } else if ((leftOOB && !rightOOB) || rightContact) {
-        Serial.println("Turn right!");
-        if (MOVE) robot.drive.turnRight(1.0f, 1.0f);
+        LOG_DEBUG_PRINTF("Turn right!");
+        robot.drive.turnRight(1.0f, 1.0f);
     } else lost = true;
 
     auto &data = machine.scratchRef<FollowOpponentData>();
     if (lost) {
         if (data.sightLostTime == 0) {
-            Serial.println("Target lost, waiting for potential contact.");
+            LOG_DEBUG_PRINTF("Target lost, waiting for potential contact.");
             data.sightLostTime = machine.getStateDuration();
             // FIXME Don't do that, as every ms could mean a win or a loss
             // But idk... it fixes it too
             robot.drive.stop();
         } else if (machine.getStateDuration() - data.sightLostTime > CONTACT_REGAIN_TIMEOUT) {
-            Serial.printf("Switching to SearchForOpponentState after %d ms of OOB.\n", CONTACT_REGAIN_TIMEOUT);
-            if (MOVE) machine.setState<SearchForOpponentState>();
+            LOG_DEBUG_PRINTF("Switching to SearchForOpponentState after %d ms of OOB.", CONTACT_REGAIN_TIMEOUT);
+            machine.setState<SearchForOpponentState>();
         }
     } else
         data.sightLostTime = 0;

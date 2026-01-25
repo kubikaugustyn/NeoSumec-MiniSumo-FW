@@ -7,13 +7,14 @@
 
 #include "MainConfig.h"
 #include "StateMachine.h"
+#include "strategy/debug/logging.h"
 #include "strategy/interrupts/StartRobot.h"
 
 auto robot = Robot();
 auto state = StateMachine(robot);
 
 void setup() {
-#ifdef DEBUG_LOGGING
+#if LOG_LEVEL > LOGGING_DISABLED
     Serial.begin(115200);
 #endif
     robot.begin();

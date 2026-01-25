@@ -9,9 +9,9 @@
 
 #ifndef INTERRUPT_KEEP_IN_RING_DISABLE
 
-bool processKeepInRingInterrupt(StateMachine *machine);
+bool processKeepInRingFrontInterrupt(StateMachine *machine);
 
-class InterruptKeepInRingState final : public BaseState {
+class InterruptKeepInRingFrontState final : public BaseState {
     using BaseState::BaseState;
 
     void enter() override;

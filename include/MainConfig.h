@@ -5,8 +5,11 @@
 
 #pragma once
 
-// Uncomment to enable debug logging
-#define DEBUG_LOGGING
+// Logging configuration
+#define LOG_LEVEL LOGGING_DISABLED
+// #define LOG_LEVEL LOG_ERROR
+// #define LOG_LEVEL LOG_INFO
+// #define LOG_LEVEL LOG_DEBUG
 // The noop time after pressing the start button
 #define START_BUTTON_DELAY 5000
 
