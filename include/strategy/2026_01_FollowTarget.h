@@ -8,33 +8,58 @@
 
 #ifdef STRATEGY_NEOSUMEC_2026_01_FOLLOW_TARGET
 #define STRATEGY_INITIAL_STATE EntryState
-#define INTERRUPT_RETURN_STATE EntryState
-#define LUNA_RING_THRESHOLD 60 // cm
+#define INTERRUPT_RETURN_STATE BackOffEdgeState
+#define EDGE_BACKOFF_BACKWARDS_DURATION 200 // ms
+#define LUNA_RING_THRESHOLD 70 // cm, any further means void
+#define CONTACT_REGAIN_TIMEOUT 150 // ms
+#define SEARCH_INITIAL_DURATION 500 // ms
+#define SEARCH_TIME_INCREMENT 300 // ms
+#define SEARCH_TIME_LIMIT 2000 // ms
 
 class EntryState final : public BaseState {
     using BaseState::BaseState;
 
     void enter() override;
 
-    void update() override {}
+    void update() override;
 
     void exit() override {}
 };
 
-class SearchForOpponentState final : public BaseState {
+class BackOffEdgeState final : public BaseState {
     using BaseState::BaseState;
 
-    void enter() override {}
+    void enter() override;
 
     void update() override;
 
     void exit() override {}
 };
 
+struct SearchForOpponentData {
+    bool turningLeft;
+    unsigned long lastChangeTime;
+    unsigned long turnDuration;
+};
+
+class SearchForOpponentState final : public BaseState {
+    using BaseState::BaseState;
+
+    void enter() override;
+
+    void update() override;
+
+    void exit() override {}
+};
+
+struct FollowOpponentData {
+    unsigned long sightLostTime;
+};
+
 class FollowOpponentState final : public BaseState {
     using BaseState::BaseState;
 
-    void enter() override {}
+    void enter() override;
 
     void update() override;
 

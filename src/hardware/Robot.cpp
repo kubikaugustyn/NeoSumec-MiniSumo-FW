@@ -10,12 +10,16 @@
 #include "hardware/Pins.h"
 
 void Robot::begin() {
-    leftMotor = Motor(PIN_MOTOR_LEFT_NSLEEP, PIN_MOTOR_LEFT_ENABLE, PIN_MOTOR_LEFT_PHASE, MOTOR_LEFT_CHANNEL);
-    rightMotor = Motor(PIN_MOTOR_RIGHT_NSLEEP, PIN_MOTOR_RIGHT_ENABLE, PIN_MOTOR_RIGHT_PHASE, MOTOR_RIGHT_CHANNEL);
+    leftMotor = Motor(PIN_MOTOR_LEFT_NSLEEP, PIN_MOTOR_LEFT_ENABLE, PIN_MOTOR_LEFT_PHASE, MOTOR_LEFT_CHANNEL,
+                      MOTOR_LEFT_SCALE);
+    rightMotor = Motor(PIN_MOTOR_RIGHT_NSLEEP, PIN_MOTOR_RIGHT_ENABLE, PIN_MOTOR_RIGHT_PHASE, MOTOR_RIGHT_CHANNEL,
+                       MOTOR_RIGHT_SCALE);
     drive = DriveBase(leftMotor, rightMotor);
 
     ledRed = LED(PIN_LED_RED);
     ledOrange = LED(PIN_LED_ORANGE);
+
+    startButton = Button(PIN_BUTTON);
 
     lineSensorLeft = QRE(PIN_QRE_LEFT);
     lineSensorRight = QRE(PIN_QRE_RIGHT);

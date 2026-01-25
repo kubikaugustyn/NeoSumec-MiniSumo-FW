@@ -7,20 +7,19 @@
 
 #include "MainConfig.h"
 #include "StateMachine.h"
+#include "strategy/interrupts/StartRobot.h"
 
 auto robot = Robot();
 auto state = StateMachine(robot);
 
 void setup() {
+#ifdef DEBUG_LOGGING
     Serial.begin(115200);
+#endif
     robot.begin();
 
     // Set the first state
-    state.setState<STRATEGY_INITIAL_STATE>();
-
-    // Temporary: blink the LEDs to confirm the uploads actually work
-    robot.ledRed.blink(500);
-    robot.ledOrange.blink(1000);
+    state.setState<InterruptStartRobotState>();
 }
 
 void loop() {

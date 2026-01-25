@@ -6,10 +6,15 @@
 #include "strategy/interrupts/interrupts.h"
 
 // All interrupts
+#include "strategy/interrupts/StartRobot.h"
 #include "strategy/interrupts/KeepInRing.h"
+#include "strategy/interrupts/KeepInRingBack.h"
 
 bool processInterrupts(StateMachine *machine) {
 #ifndef INTERRUPT_KEEP_IN_RING_DISABLE
+    // The rear QRE has the highest priority
+    if (processKeepInRingBackInterrupt(machine)) return true;
+    // Then come the front QREs
     if (processKeepInRingInterrupt(machine)) return true;
 #endif
 

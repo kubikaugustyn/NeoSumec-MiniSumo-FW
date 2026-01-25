@@ -6,6 +6,18 @@
 #include "StateMachine.h"
 #include "strategy/interrupts/interrupts.h"
 
+void StateMachine::markEnteredInterrupt(const InterruptCause cause) {
+    enableInterrupts = false;
+
+    // Save the information about the interrupt
+    auto &data = scratchRef<InterruptResultData>();
+    data.cause = cause;
+}
+
+void StateMachine::markExitedInterrupt() {
+    enableInterrupts = true;
+}
+
 void StateMachine::clearState() {
     nextState = nullptr;
     nextStateCallback = nullptr;
@@ -31,6 +43,9 @@ void StateMachine::update() {
     // Check for interrupts
     if (enableInterrupts && processInterrupts(this)) {
         // Some interrupt called setState(). Immediately exit and wait for the next `update()` call.
+#ifdef DEBUG_LOGGING
+        Serial.println("StateMachine::update(): Received interrupt.");
+#endif
         return;
     }
 
