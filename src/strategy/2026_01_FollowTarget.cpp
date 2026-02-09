@@ -42,9 +42,13 @@ void BackOffEdgeState::update() {
 
 void SearchForOpponentState::enter() {
     auto &data = machine.scratchRef<SearchForOpponentData>();
-    data.turningLeft = true;
+    // Will be flipped to get the first direction
+    // Btw it can be overridden by a callback provided to setState()
+    data.turningLeft = false;
     data.lastChangeTime = 0;
     data.turnDuration = 0;
+    robot.ledRed.setOn();
+    robot.ledOrange.blink(100);
 }
 
 void SearchForOpponentState::update() {
@@ -87,19 +91,21 @@ void FollowOpponentState::update() {
     // LOG_DEBUG_PRINTF("Search: %d %d %d\n", left, middle, right);
     LOG_DEBUG_PRINTF("Search: %d %d %d", leftOOB, middleOOB, rightOOB);
 
+    auto &data = machine.scratchRef<FollowOpponentData>();
     bool lost = false;
     if ((leftOOB && rightOOB && !middleOOB) || middleContact) {
         LOG_DEBUG_PRINTF("Drive forward!");
         robot.drive.driveStraight(1.0f);
     } else if ((!leftOOB && rightOOB) || leftContact) {
         LOG_DEBUG_PRINTF("Turn left!");
-        robot.drive.turnLeft(1.0f, 1.0f);
+        robot.drive.turnLeft(1.0f, 0.5f);
+        data.lastSeenLeft = true;
     } else if ((leftOOB && !rightOOB) || rightContact) {
         LOG_DEBUG_PRINTF("Turn right!");
-        robot.drive.turnRight(1.0f, 1.0f);
+        robot.drive.turnRight(1.0f, 0.5f);
+        data.lastSeenLeft = false;
     } else lost = true;
 
-    auto &data = machine.scratchRef<FollowOpponentData>();
     if (lost) {
         if (data.sightLostTime == 0) {
             LOG_DEBUG_PRINTF("Target lost, waiting for potential contact.");
@@ -109,7 +115,19 @@ void FollowOpponentState::update() {
             robot.drive.stop();
         } else if (machine.getStateDuration() - data.sightLostTime > CONTACT_REGAIN_TIMEOUT) {
             LOG_DEBUG_PRINTF("Switching to SearchForOpponentState after %d ms of OOB.", CONTACT_REGAIN_TIMEOUT);
-            machine.setState<SearchForOpponentState>();
+            // Remember that the initial turning direction is negated
+            // I hate stateless lambdas :-/
+            if (data.lastSeenLeft) {
+                // Search to the left
+                machine.setState<SearchForOpponentState>([](StateMachine *m) {
+                    m->scratchRef<SearchForOpponentData>().turningLeft = false;
+                });
+            } else {
+                // Search to the right
+                machine.setState<SearchForOpponentState>([](StateMachine *m) {
+                    m->scratchRef<SearchForOpponentData>().turningLeft = true;
+                });
+            }
         }
     } else
         data.sightLostTime = 0;

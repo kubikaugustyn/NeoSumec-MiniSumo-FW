@@ -6,8 +6,8 @@
 #pragma once
 #include "MainConfig.h" // Required to "load" the current pinout
 
-// ===== MK5 pins =====
-#ifdef PINOUT_NEOSUMEC_PINS_MK5
+// ===== MK3 pins =====
+#ifdef PINOUT_SUMEC_PINS_MK3
 // H-bridge pins - left motor
 #define PIN_MOTOR_LEFT_NSLEEP   11
 #define PIN_MOTOR_LEFT_ENABLE   14

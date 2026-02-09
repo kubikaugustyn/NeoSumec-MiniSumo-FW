@@ -38,11 +38,11 @@ void DriveBase::turnLeft(const float speed, const float turningSpeed) const {
 }
 
 void DriveBase::turnRight(const float turningSpeed) const {
-    turn(1.0f, clampNormalPositive(turningSpeed));
+    turn(1.0f, -clampNormalPositive(turningSpeed));
 }
 
 void DriveBase::turnRight(const float speed, const float turningSpeed) const {
-    turn(speed, clampNormalPositive(turningSpeed));
+    turn(speed, -clampNormalPositive(turningSpeed));
 }
 
 void DriveBase::turn(float speed, float turningSpeed) const {
@@ -54,13 +54,21 @@ void DriveBase::turn(float speed, float turningSpeed) const {
     speed = clampNormal(speed);
     turningSpeed = clampNormal(turningSpeed);
 
-    // turningSpeed > 0 = turn left
-    // turningSpeed < 0 = turn right
+    // turningSpeed > 0 = turn left = right wheel forwards
+    // turningSpeed < 0 = turn right = left wheel forwards
 
-    float d = turningSpeed * (1.0f - fabs(speed));
+    float left  = speed - turningSpeed;
+    float right = speed + turningSpeed;
 
-    leftMotor.drive(speed + d);
-    rightMotor.drive(speed - d);
+    // Normalizace – zachová poměr, ale nevyjede z rozsahu
+    const float maxMag = std::max(fabs(left), fabs(right));
+    if (maxMag > 1.0f) {
+        left  /= maxMag;
+        right /= maxMag;
+    }
+
+    leftMotor.drive(left);
+    rightMotor.drive(right);
 }
 
 void DriveBase::turnLeftTank(float speed) const {

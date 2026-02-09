@@ -12,9 +12,9 @@
 #define EDGE_BACKOFF_BACKWARDS_DURATION 200 // ms
 #define LUNA_RING_THRESHOLD 70 // cm, any further means void
 #define CONTACT_REGAIN_TIMEOUT 150 // ms
-#define SEARCH_INITIAL_DURATION 500 // ms
-#define SEARCH_TIME_INCREMENT 300 // ms
-#define SEARCH_TIME_LIMIT 2000 // ms
+#define SEARCH_INITIAL_DURATION 1000 // ms
+#define SEARCH_TIME_INCREMENT 500 // ms
+#define SEARCH_TIME_LIMIT 5000 // ms
 
 class EntryState final : public BaseState {
     using BaseState::BaseState;
@@ -54,6 +54,7 @@ class SearchForOpponentState final : public BaseState {
 
 struct FollowOpponentData {
     unsigned long sightLostTime;
+    bool lastSeenLeft;
 };
 
 class FollowOpponentState final : public BaseState {
