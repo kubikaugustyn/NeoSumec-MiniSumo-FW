@@ -7,7 +7,7 @@
 
 // All interrupts
 #include "strategy/interrupts/StartRobot.h"
-#include "strategy/interrupts/KeepInRing.h"
+#include "strategy/interrupts/KeepInRingFront.h"
 #include "strategy/interrupts/KeepInRingBack.h"
 
 bool processInterrupts(StateMachine *machine) {
@@ -15,7 +15,7 @@ bool processInterrupts(StateMachine *machine) {
     // The rear QRE has the highest priority
     if (processKeepInRingBackInterrupt(machine)) return true;
     // Then come the front QREs
-    if (processKeepInRingInterrupt(machine)) return true;
+    if (processKeepInRingFrontInterrupt(machine)) return true;
 #endif
 
     return false;

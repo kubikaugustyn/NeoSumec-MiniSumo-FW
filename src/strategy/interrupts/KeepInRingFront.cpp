@@ -3,29 +3,29 @@
 // Copyright (c) 2026 Jakub Augustýn. All rights reserved.
 //
 
-#include "strategy/interrupts/KeepInRing.h"
+#include "strategy/interrupts/KeepInRingFront.h"
 #include "strategy/interrupts/interrupts.h"
 #include "strategy/interrupts/KeepInRingBack.h"
 
 #ifndef INTERRUPT_KEEP_IN_RING_DISABLE
 
-bool processKeepInRingInterrupt(StateMachine *machine) {
+bool processKeepInRingFrontInterrupt(StateMachine *machine) {
     const auto robot = machine->getRobot();
     if (robot.lineSensorLeft.get() || robot.lineSensorRight.get()) {
-        machine->setState<InterruptKeepInRingState>();
+        machine->setState<InterruptKeepInRingFrontState>();
         return true;
     }
 
     return false;
 }
 
-void InterruptKeepInRingState::enter() {
+void InterruptKeepInRingFrontState::enter() {
     machine.markEnteredInterrupt(robot.lineSensorLeft.get() ? InterruptCause::LEFT_QRE : InterruptCause::RIGHT_QRE);
 
     robot.drive.driveStraight(-1.0f);
 }
 
-void InterruptKeepInRingState::update() {
+void InterruptKeepInRingFrontState::update() {
     // NEVER EVER drive backwards outside the ring
     if (robot.lineSensorRear.get()) {
         machine.setState<InterruptKeepInRingBackState>();
@@ -49,7 +49,7 @@ void InterruptKeepInRingState::update() {
     machine.setState<INTERRUPT_RETURN_STATE>();
 }
 
-void InterruptKeepInRingState::exit() {
+void InterruptKeepInRingFrontState::exit() {
     machine.markExitedInterrupt();
 }
 
