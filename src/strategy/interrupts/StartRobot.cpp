@@ -4,14 +4,14 @@
 //
 
 #include "strategy/interrupts/StartRobot.h"
+
+#include "strategy/debug/logging.h"
 #include "strategy/interrupts/interrupts.h"
 
 void InterruptStartRobotState::enter() {
     machine.markEnteredInterrupt(InterruptCause::START_ROBOT);
 
-#ifdef DEBUG_LOGGING
-    Serial.println("Start robot interrupt: enter");
-#endif
+    LOG_DEBUG_PRINTF("Start robot interrupt: enter");
 
     robot.drive.stop();
     robot.ledRed.setOn();
@@ -24,9 +24,7 @@ void InterruptStartRobotState::update() {
 }
 
 void InterruptStartRobotWaitState::enter() {
-#ifdef DEBUG_LOGGING
-    Serial.println("Start robot interrupt: button pressed");
-#endif
+    LOG_DEBUG_PRINTF("Start robot interrupt: button pressed");
 
     robot.ledRed.setOff();
     robot.ledOrange.setOn();
@@ -34,6 +32,8 @@ void InterruptStartRobotWaitState::enter() {
 
 void InterruptStartRobotWaitState::update() {
     if (machine.getStateDuration() < START_BUTTON_DELAY) return;
+
+    LOG_DEBUG_PRINTF("Start robot interrupt: starting strategy...");
     machine.setState<STRATEGY_INITIAL_STATE>();
 }
 

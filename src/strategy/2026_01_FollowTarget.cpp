@@ -58,6 +58,8 @@ void SearchForOpponentState::update() {
         return;
     }
 
+    // TODO Immediately switch the direction when you see something with the side Lunas/Sharps
+
     // Change the direction
     auto &data = machine.scratchRef<SearchForOpponentData>();
     if (machine.getStateDuration() - data.lastChangeTime >= data.turnDuration) {
@@ -86,22 +88,32 @@ void FollowOpponentState::update() {
             rightOOB = right > LUNA_RING_THRESHOLD,
             leftContact = left == 0xFFFF,
             middleContact = middle == 0xFFFF,
-            rightContact = right == 0xFFFF;
+            rightContact = right == 0xFFFF,
+            leftSide = robot.leftProximity.get(),
+            rightSide = robot.rightProximity.get();
 
     // LOG_DEBUG_PRINTF("Search: %d %d %d\n", left, middle, right);
-    LOG_DEBUG_PRINTF("Search: %d %d %d", leftOOB, middleOOB, rightOOB);
+    LOG_DEBUG_PRINTF("Search: %d %d %d %d %d", leftSide, leftOOB, middleOOB, rightOOB, rightSide);
 
     auto &data = machine.scratchRef<FollowOpponentData>();
     bool lost = false;
     if ((leftOOB && rightOOB && !middleOOB) || middleContact) {
         LOG_DEBUG_PRINTF("Drive forward!");
         robot.drive.driveStraight(1.0f);
+    } else if (leftSide) {
+        LOG_DEBUG_PRINTF("Turn sharp left!");
+        robot.drive.turnLeftTank(1.0f);
+        data.lastSeenLeft = true;
+    } else if (rightSide) {
+        LOG_DEBUG_PRINTF("Turn sharp right!");
+        robot.drive.turnRightTank(1.0f);
+        data.lastSeenLeft = false;
     } else if ((!leftOOB && rightOOB) || leftContact) {
-        LOG_DEBUG_PRINTF("Turn left!");
+        LOG_DEBUG_PRINTF("Turn slightly left!");
         robot.drive.turnLeft(1.0f, 0.5f);
         data.lastSeenLeft = true;
     } else if ((leftOOB && !rightOOB) || rightContact) {
-        LOG_DEBUG_PRINTF("Turn right!");
+        LOG_DEBUG_PRINTF("Turn slightly right!");
         robot.drive.turnRight(1.0f, 0.5f);
         data.lastSeenLeft = false;
     } else lost = true;
