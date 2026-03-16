@@ -6,7 +6,8 @@
 #pragma once
 #include "StateMachine.h"
 
-bool processStartRobotInterrupt(StateMachine *machine);
+#define START_ROBOT_BUTTON 1
+#define START_ROBOT_IR_MODULE 2 // https://p1r.se/startmodule/
 
 class InterruptStartRobotState final : public BaseState {
     using BaseState::BaseState;

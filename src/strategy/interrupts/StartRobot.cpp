@@ -19,7 +19,12 @@ void InterruptStartRobotState::enter() {
 }
 
 void InterruptStartRobotState::update() {
+#if START_ROBOT_TRIGGER == START_ROBOT_BUTTON
     if (!robot.startButton.get()) return;
+#elif START_ROBOT_TRIGGER == START_ROBOT_IR_MODULE
+    // TODO
+#endif
+
     machine.setState<InterruptStartRobotWaitState>();
 }
 

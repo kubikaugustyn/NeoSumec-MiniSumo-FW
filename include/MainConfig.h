@@ -10,6 +10,10 @@
 // #define LOG_LEVEL LOG_ERROR
 // #define LOG_LEVEL LOG_INFO
 // #define LOG_LEVEL LOG_DEBUG
+
+// Starting configuration
+#define START_ROBOT_TRIGGER START_ROBOT_BUTTON
+// #define START_ROBOT_TRIGGER START_ROBOT_IR_MODULE
 // The noop time after pressing the start button
 #define START_BUTTON_DELAY 5000
 
