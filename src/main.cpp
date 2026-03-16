@@ -24,8 +24,17 @@ void setup() {
 }
 
 void loop() {
+#if LOG_LEVEL >= LOG_DEBUG
+    uint64_t sTime = millis();
+#endif
+
     // Update the hardware
     robot.update();
     // Update the state/strategy
     state.update();
+
+#if LOG_LEVEL >= LOG_DEBUG
+    uint64_t eTime = millis();
+    LOG_DEBUG_PRINTF("Loop took %d ms", eTime - sTime);
+#endif
 }

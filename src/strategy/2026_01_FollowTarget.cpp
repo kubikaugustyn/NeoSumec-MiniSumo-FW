@@ -94,6 +94,7 @@ void FollowOpponentState::update() {
 
     // LOG_DEBUG_PRINTF("Search: %d %d %d\n", left, middle, right);
     LOG_DEBUG_PRINTF("Search: %d %d %d %d %d", leftSide, leftOOB, middleOOB, rightOOB, rightSide);
+    // LOG_DEBUG_PRINTF("Contact: %d %d %d", leftContact, middleContact, rightContact);
 
     auto &data = machine.scratchRef<FollowOpponentData>();
     bool lost = false;

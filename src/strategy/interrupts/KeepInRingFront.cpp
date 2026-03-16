@@ -45,7 +45,7 @@ void InterruptKeepInRingFrontState::update() {
         robot.drive.turnLeftTank(1.0f);
 
     // Done
-    if (machine.getStateDuration() < 300) return;
+    if (machine.getStateDuration() < 200) return;
     machine.setState<INTERRUPT_RETURN_STATE>();
 }
 
