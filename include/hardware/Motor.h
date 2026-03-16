@@ -32,16 +32,16 @@
 
 class Motor {
 private:
-    uint8_t sleepPin; // nSLEEP pin
-    uint8_t enablePin; // EN/IN1 pin
-    uint8_t phasePin; // PH/IN2 pin
-    uint8_t channel;
+    uint8_t sleepPin{}; // nSLEEP pin
+    uint8_t enablePin{}; // EN/IN1 pin
+    uint8_t phasePin{}; // PH/IN2 pin
+    uint8_t channel{};
     float speedMultiplier = 1.0;
 
 public:
     Motor() = default;
 
-    Motor(uint8_t sleepPin, uint8_t enablePin, uint8_t phasePin, uint8_t channel, float speedMultiplier = 1.0);
+    void begin(uint8_t sleepPin_, uint8_t enablePin_, uint8_t phasePin_, uint8_t channel_, float speedMultiplier_ = 1.0);
 
     void goForward() const;
 

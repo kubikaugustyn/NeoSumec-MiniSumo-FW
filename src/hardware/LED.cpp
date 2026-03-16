@@ -9,7 +9,7 @@
 #include <Arduino.h>
 #include "hardware/LED.h"
 
-LED::LED(const uint8_t ledPin) {
+void LED::begin(const uint8_t ledPin) {
     pin = ledPin;
     pinMode(pin, OUTPUT);
     setOff();

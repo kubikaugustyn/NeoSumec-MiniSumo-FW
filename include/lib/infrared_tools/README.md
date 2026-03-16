@@ -1,0 +1,1 @@
+Source code for infrared_tools: https://github.com/espressif/esp-idf/tree/v4.4/examples/peripherals/rmt/ir_protocols/components/infrared_tools

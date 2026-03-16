@@ -8,7 +8,7 @@
 
 #include "hardware/Sharp.h"
 
-Sharp::Sharp(const uint8_t sensorPin) {
+void Sharp::begin(const uint8_t sensorPin) {
     pin = sensorPin;
     pinMode(pin, INPUT);
 }

@@ -20,9 +20,9 @@ float DriveBase::clampNormal(const float value) {
     return clamp(value, -1.0f, 1.0f);
 }
 
-DriveBase::DriveBase(const Motor &leftMotor, const Motor &rightMotor) {
-    this->leftMotor = leftMotor;
-    this->rightMotor = rightMotor;
+void DriveBase::begin(const Motor &leftMotor_, const Motor &rightMotor_) {
+    leftMotor = leftMotor_;
+    rightMotor = rightMotor_;
 }
 
 void DriveBase::driveStraight(const float speed) const {

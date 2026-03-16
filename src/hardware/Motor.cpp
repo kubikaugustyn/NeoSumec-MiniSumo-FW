@@ -8,26 +8,26 @@
 
 #include "hardware/Motor.h"
 
-Motor::Motor(const uint8_t sleepPin, const uint8_t enablePin, const uint8_t phasePin, const uint8_t channel,
-             const float speedMultiplier) {
-    this->sleepPin = sleepPin;
-    this->enablePin = enablePin;
-    this->phasePin = phasePin;
-    this->channel = channel;
-    this->speedMultiplier = speedMultiplier;
+void Motor::begin(const uint8_t sleepPin_, const uint8_t enablePin_, const uint8_t phasePin_, const uint8_t channel_,
+             const float speedMultiplier_) {
+    sleepPin = sleepPin_;
+    enablePin = enablePin_;
+    phasePin = phasePin_;
+    channel = channel_;
+    speedMultiplier = speedMultiplier_;
 
     // set nSLEEP pin
-    pinMode(sleepPin, OUTPUT);
-    digitalWrite(sleepPin, HIGH);
+    pinMode(sleepPin_, OUTPUT);
+    digitalWrite(sleepPin_, HIGH);
 
     // set PH pin
-    pinMode(phasePin, OUTPUT);
+    pinMode(phasePin_, OUTPUT);
     goForward();
 
     // set EN pin
     // LEDC setup order is important!
-    ledcSetup(channel, PWM_FREQUENCY, PWM_RESOLUTION);
-    ledcAttachPin(enablePin, channel);
+    ledcSetup(channel_, PWM_FREQUENCY, PWM_RESOLUTION);
+    ledcAttachPin(enablePin_, channel_);
 
     stop();
 }

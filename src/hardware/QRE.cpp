@@ -8,7 +8,7 @@
 
 #include "hardware/QRE.h"
 
-QRE::QRE(const uint8_t sensorPin) {
+void QRE::begin(const uint8_t sensorPin) {
     pin = sensorPin;
     pinMode(pin, INPUT);
 }

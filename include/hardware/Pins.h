@@ -42,5 +42,5 @@
 #define PIN_IR                  38
 // Button
 #define PIN_BUTTON              2
-#endif // PINOUT_NEOSUMEC_PINS_MK5
+#endif // PINOUT_SUMEC_PINS_MK3
 // ===== MK5 pins end =====

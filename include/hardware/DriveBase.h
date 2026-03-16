@@ -25,7 +25,7 @@ private:
 public:
     DriveBase() = default;
 
-    DriveBase(const Motor &leftMotor, const Motor &rightMotor);
+    void begin(const Motor &leftMotor_, const Motor &rightMotor_);
 
     /**
     * @brief Moves the robot forward.

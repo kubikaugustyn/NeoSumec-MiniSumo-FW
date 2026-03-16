@@ -11,12 +11,12 @@
 
 class Sharp {
 private:
-    uint8_t pin;
+    uint8_t pin{};
 
 public:
     Sharp() = default;
 
-    explicit Sharp(uint8_t sensorPin);
+    void begin(uint8_t sensorPin);
 
     /**
      * Returns the sensor detection state

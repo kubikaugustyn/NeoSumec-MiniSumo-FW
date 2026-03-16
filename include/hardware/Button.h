@@ -8,12 +8,12 @@
 
 class Button {
 private:
-    uint8_t pin;
+    uint8_t pin{};
 
 public:
     Button() = default;
 
-    explicit Button(uint8_t sensorPin);
+    void begin(uint8_t sensorPin);
 
     /**
      * Reads the button state

@@ -11,6 +11,7 @@
 #include "hardware/QRE.h"
 #include "hardware/Sharp.h"
 #include "hardware/Luna.h"
+#include "hardware/RC5Receiver.h"
 
 class Robot {
 public:
@@ -24,6 +25,8 @@ public:
     Sharp leftProximity, rightProximity;
     // Luna frontal distance sensors
     Luna frontLeftDistance, frontMiddleDistance, frontRightDistance;
+    // IR RC-5 receiver
+    RC5Receiver infrared;
 
     Robot() = default;
 

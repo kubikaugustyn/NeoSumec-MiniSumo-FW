@@ -5,7 +5,7 @@
 
 #include "hardware/Button.h"
 
-Button::Button(const uint8_t sensorPin) {
+void Button::begin(const uint8_t sensorPin) {
     pin = sensorPin;
     pinMode(pin, INPUT_PULLDOWN);
 }

@@ -17,7 +17,7 @@ private:
 public:
     QRE() = default;
 
-    explicit QRE(uint8_t sensorPin);
+    void begin(uint8_t sensorPin);
 
     /**
      * Gets the current threshold value

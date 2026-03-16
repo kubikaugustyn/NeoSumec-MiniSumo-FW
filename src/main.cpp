@@ -10,7 +10,7 @@
 #include "strategy/debug/logging.h"
 #include "strategy/interrupts/StartRobot.h"
 
-auto robot = Robot();
+Robot robot;
 auto state = StateMachine(robot);
 
 void setup() {

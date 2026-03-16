@@ -15,13 +15,13 @@ private:
     // TODO This is an awful library, we should probably just write the operations ourselves
     static TFLI2C tflI2C;
 
-    uint8_t address;
+    uint8_t address{};
     uint16_t threshold = 6969; // FIXME
 
 public:
     Luna() = default;
 
-    explicit Luna(uint8_t i2cAddress);
+    void begin(uint8_t i2cAddress);
 
     /**
      * Gets the current threshold value

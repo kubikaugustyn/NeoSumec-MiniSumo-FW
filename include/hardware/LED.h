@@ -22,7 +22,7 @@ private:
 public:
     LED() = default;
 
-    explicit LED(uint8_t ledPin);
+    void begin(uint8_t ledPin);
 
     void setOn();
 
