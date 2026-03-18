@@ -32,15 +32,20 @@ void RC5Receiver::onReceive(const Handler h) {
 }
 
 void RC5Receiver::update() const {
+    LOG_DEBUG_PRINTF("SUS");
+    return;
+
     if (!ringbuf)
         return;
 
+    LOG_DEBUG_PRINTF("HALOOO");
+
     size_t length = 0;
     const auto items = static_cast<rmt_item32_t *>(xRingbufferReceive(ringbuf, &length, portMAX_DELAY));
-    if (!items) return;
+    if (length == 0 || !items) return;
     const size_t count = length / sizeof(rmt_item32_t); // one RMT = 4 Bytes
     if (parser->input(parser, items, count) == ESP_OK) {
-        RC5Message msg;
+        RC5Message msg{};
         if (parser->get_scan_code(parser, &msg.address, &msg.command, &msg.repeat) == ESP_OK) {
             // ESP_LOGI(TAG, "Scan Code %s --- addr: 0x%04x cmd: 0x%04x", repeat ? "(repeat)" : "", addr, cmd);
             LOG_DEBUG_PRINTF("Scan Code %s --- addr: 0x%04x cmd: 0x%04x", repeat ? "(repeat)" : "", addr, cmd);
