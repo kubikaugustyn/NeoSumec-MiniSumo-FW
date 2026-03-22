@@ -39,7 +39,7 @@ void Robot::begin() {
 
     // TODO Figure out the handler stuff after confirming receiving even works
     // It may be a good idea to read incoming messages in a separate interrupt (higher priority than QREs)
-    infrared.begin(PIN_IR, RMT_CHANNEL_0, nullptr);
+    infrared.begin(PIN_IR, nullptr);
 }
 
 void Robot::update() {

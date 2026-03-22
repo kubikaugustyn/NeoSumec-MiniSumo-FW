@@ -16,6 +16,9 @@ auto state = StateMachine(robot);
 void setup() {
 #if LOG_LEVEL > LOGGING_DISABLED
     Serial.begin(115200);
+    delay(5000);
+    LOG_INFO_PRINT(F("NeoSumec by Jakub Augystyn, " __FILE__ " from " __DATE__));
+    // LOG_INFO_PRINT(F("Using IRRemote version " VERSION_IRREMOTE));
 #endif
     robot.begin();
 
@@ -23,9 +26,14 @@ void setup() {
     state.setState<InterruptStartRobotState>();
 }
 
+#if LOG_LEVEL >= LOG_DEBUG
+uint16_t loopI = 0;
+#endif
+
 void loop() {
 #if LOG_LEVEL >= LOG_DEBUG
     uint64_t sTime = millis();
+    loopI++;
 #endif
 
     // Update the hardware
@@ -35,6 +43,7 @@ void loop() {
 
 #if LOG_LEVEL >= LOG_DEBUG
     uint64_t eTime = millis();
-    LOG_DEBUG_PRINTF("Loop took %d ms", eTime - sTime);
+    // if ((loopI % 1000) == 0)
+    // LOG_DEBUG_PRINTF("Loop took %llu ms", eTime - sTime);
 #endif
 }
