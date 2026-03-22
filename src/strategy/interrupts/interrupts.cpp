@@ -9,8 +9,12 @@
 #include "strategy/interrupts/StartRobot.h"
 #include "strategy/interrupts/KeepInRingFront.h"
 #include "strategy/interrupts/KeepInRingBack.h"
+#include "strategy/interrupts/StopRobot.h"
 
 bool processInterrupts(StateMachine *machine) {
+    // Of course, stopping is the most important thing
+    if (processStopRobotInterrupt(machine)) return true;
+
 #ifndef INTERRUPT_KEEP_IN_RING_DISABLE
     // The rear QRE has the highest priority
     if (processKeepInRingBackInterrupt(machine)) return true;

@@ -7,7 +7,9 @@
 
 #include <Wire.h>
 
+#include "callbacks.h"
 #include "hardware/Pins.h"
+#include "hardware/RobotState.h"
 
 void Robot::begin() {
     leftMotor.begin(PIN_MOTOR_LEFT_NSLEEP, PIN_MOTOR_LEFT_ENABLE, PIN_MOTOR_LEFT_PHASE, MOTOR_LEFT_CHANNEL,
@@ -39,11 +41,10 @@ void Robot::begin() {
 
     // TODO Figure out the handler stuff after confirming receiving even works
     // It may be a good idea to read incoming messages in a separate interrupt (higher priority than QREs)
-    infrared.begin(PIN_IR, nullptr);
+    infrared.begin(PIN_IR, onIRMessage);
 }
 
 void Robot::update() {
     ledRed.update();
     ledOrange.update();
-    infrared.update();
 }

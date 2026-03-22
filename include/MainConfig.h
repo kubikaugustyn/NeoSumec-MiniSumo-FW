@@ -12,8 +12,8 @@
 #define LOG_LEVEL LOG_DEBUG
 
 // Starting configuration
-#define START_ROBOT_TRIGGER START_ROBOT_BUTTON
-// #define START_ROBOT_TRIGGER START_ROBOT_IR_MODULE
+// #define START_ROBOT_TRIGGER START_ROBOT_BUTTON
+#define START_ROBOT_TRIGGER START_ROBOT_IR_MODULE
 // The noop time after pressing the start button
 #define START_BUTTON_DELAY 5000
 
@@ -32,3 +32,7 @@
 #include "strategy/2025_01_KeepRing.h"
 #include "strategy/2026_01_FollowTarget.h"
 #include "strategy/2026_02_TestTurning.h"
+
+// Debugging configuration
+// #define DEBUG_ENABLE_TIMING
+#define DEBUG_ENABLE_INFRARED

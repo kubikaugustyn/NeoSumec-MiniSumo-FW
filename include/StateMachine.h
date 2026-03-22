@@ -14,7 +14,7 @@ class StateMachine;
 
 // I don't like the compiler...
 // FIXME Move it back to strategy/interrupts/interrupts.h
-enum InterruptCause { START_ROBOT, LEFT_QRE, RIGHT_QRE, REAR_QRE };
+enum InterruptCause { START_ROBOT, STOP_ROBOT, LEFT_QRE, RIGHT_QRE, REAR_QRE };
 
 //------------------ Abstract State Class  ------------------
 class State {
@@ -64,7 +64,9 @@ class StateMachine {
     Callback nextStateCallback = nullptr; // Called after the state is changed
     // Should the state machine use interrupts?
     bool enableInterrupts = true;
-    // Scratch buffer, shared for all states
+    // Shared data pool buffer, useful data for all states
+    alignas(std::max_align_t) uint8_t shared[64]{};
+    // Scratch buffer, shared for all states, but only contains data useful for that one state
     alignas(std::max_align_t) uint8_t scratch[64]{};
     unsigned long stateStartTime = 0, currentStateDuration = 0;
 
@@ -144,6 +146,28 @@ public:
      * calls the current state's `update()` method.
      */
     void update();
+
+    /**
+     * @brief Gets a reference to the shared buffer interpreted as type T.
+     *
+     * The shared buffer contains a shared state of the state machine, as a 64-byte buffer.
+     * You should not write to it. You can use it to gain useful information about the overall state of the robot.
+     * The buffer is never cleared.
+     *
+     * Provides type-safe access to the shared buffer by casting it to the requested type.
+     * The method includes compile-time checks to ensure the requested type:
+     * - Fits within the shared buffer size
+     * - Has alignment requirements compatible with the buffer
+     *
+     * @tparam T The type to interpret the shared buffer as
+     * @return Reference to the shared buffer as type T
+     */
+    template<typename T>
+    T &sharedRef() {
+        static_assert(sizeof(T) <= sizeof(shared), "Type too big for shared buffer");
+        static_assert(alignof(T) <= alignof(std::max_align_t), "Alignment too strict for shared buffer");
+        return *reinterpret_cast<T *>(shared);
+    }
 
     /**
      * @brief Gets a reference to the scratch buffer interpreted as type T.
