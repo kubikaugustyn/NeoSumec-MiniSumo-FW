@@ -9,7 +9,7 @@
 #include "hardware/RobotState.h"
 #include "strategy/debug/logging.h"
 
-bool processKeepInRingBackInterrupt(StateMachine *machine) {
+bool processStopRobotInterrupt(StateMachine *machine) {
 #if START_ROBOT_TRIGGER == START_ROBOT_IR_MODULE
     // https://p1r.se/startmodule/implement-yourself/
     const auto &state = machine->sharedRef<RobotState>();
