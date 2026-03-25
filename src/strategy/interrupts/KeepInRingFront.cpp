@@ -4,8 +4,10 @@
 //
 
 #include "strategy/interrupts/KeepInRingFront.h"
+
 #include "strategy/interrupts/interrupts.h"
 #include "strategy/interrupts/KeepInRingBack.h"
+#include "strategy/interrupts/StopRobot.h"
 
 #ifndef INTERRUPT_KEEP_IN_RING_DISABLE
 
@@ -26,6 +28,9 @@ void InterruptKeepInRingFrontState::enter() {
 }
 
 void InterruptKeepInRingFrontState::update() {
+    // Always receive stop events
+    if (processStopRobotInterrupt(&machine)) return;
+
     // NEVER EVER drive backwards outside the ring
     if (robot.lineSensorRear.get()) {
         machine.setState<InterruptKeepInRingBackState>();
@@ -39,13 +44,13 @@ void InterruptKeepInRingFrontState::update() {
     }
 
     // Turn away from the line
-    if (machine.scratchRef<InterruptResultData>().cause == InterruptCause::LEFT_QRE)
-        robot.drive.turnRightTank(1.0f);
-    else
-        robot.drive.turnLeftTank(1.0f);
+    // if (machine.scratchRef<InterruptResultData>().cause == InterruptCause::LEFT_QRE)
+        // robot.drive.turnRightTank(1.0f);
+    // else
+        // robot.drive.turnLeftTank(1.0f);
 
     // Done
-    if (machine.getStateDuration() < 200) return;
+    // if (machine.getStateDuration() < 150) return;
     machine.setState<INTERRUPT_RETURN_STATE>();
 }
 

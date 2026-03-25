@@ -6,10 +6,10 @@
 #pragma once
 
 // Logging configuration
-// #define LOG_LEVEL LOGGING_DISABLED
+#define LOG_LEVEL LOGGING_DISABLED
 // #define LOG_LEVEL LOG_ERROR
 // #define LOG_LEVEL LOG_INFO
-#define LOG_LEVEL LOG_DEBUG
+// #define LOG_LEVEL LOG_DEBUG
 
 // Starting configuration
 // #define START_ROBOT_TRIGGER START_ROBOT_BUTTON
@@ -35,4 +35,4 @@
 
 // Debugging configuration
 // #define DEBUG_ENABLE_TIMING
-#define DEBUG_ENABLE_INFRARED
+// #define DEBUG_ENABLE_INFRARED

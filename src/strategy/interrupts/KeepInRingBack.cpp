@@ -4,7 +4,9 @@
 //
 
 #include "strategy/interrupts/KeepInRingBack.h"
+
 #include "strategy/interrupts/interrupts.h"
+#include "strategy/interrupts/StopRobot.h"
 
 #ifndef INTERRUPT_KEEP_IN_RING_DISABLE
 
@@ -25,6 +27,9 @@ void InterruptKeepInRingBackState::enter() {
 }
 
 void InterruptKeepInRingBackState::update() {
+    // Always receive stop events
+    if (processStopRobotInterrupt(&machine)) return;
+
     if (robot.lineSensorRear.get()) return;
     machine.setState<INTERRUPT_RETURN_STATE>();
 }
