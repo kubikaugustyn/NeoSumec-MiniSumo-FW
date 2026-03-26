@@ -13,7 +13,7 @@
 #define PIN_MOTOR_LEFT_ENABLE   14
 #define PIN_MOTOR_LEFT_PHASE    12
 #define MOTOR_LEFT_CHANNEL      0
-#define MOTOR_LEFT_SCALE        0.9f // 0.8 is no problem, 0.9 yeah, good, 0.95 is too much tho
+#define MOTOR_LEFT_SCALE        1.0f
 // H-bridge pins - right motor
 #define PIN_MOTOR_RIGHT_NSLEEP  11
 #define PIN_MOTOR_RIGHT_ENABLE  21

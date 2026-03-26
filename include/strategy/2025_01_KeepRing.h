@@ -8,6 +8,7 @@
 
 #ifdef STRATEGY_NEOSUMEC_2025_01_KEEP_RING
 #define STRATEGY_INITIAL_STATE DriveForwardState
+#define INTERRUPT_KEEP_IN_RING_DISABLE
 
 class DriveForwardState : public BaseState {
     using BaseState::BaseState;

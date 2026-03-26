@@ -88,9 +88,9 @@ void FollowOpponentState::update() {
             rightOOB = right > LUNA_RING_THRESHOLD,
             leftContact = left == 0xFFFF,
             middleContact = middle == 0xFFFF,
-            rightContact = right == 0xFFFF,
+            rightContact = right == 0xFFFF/*,
             leftSide = robot.leftProximity.get(),
-            rightSide = robot.rightProximity.get();
+            rightSide = robot.rightProximity.get()*/;
 
     // LOG_DEBUG_PRINTF("Search: %d %d %d\n", left, middle, right);
     LOG_DEBUG_PRINTF("Search: %d %d %d %d %d", leftSide, leftOOB, middleOOB, rightOOB, rightSide);
@@ -98,10 +98,14 @@ void FollowOpponentState::update() {
 
     auto &data = machine.scratchRef<FollowOpponentData>();
     bool lost = false;
-    if ((leftOOB && rightOOB && !middleOOB) || middleContact) {
+    if ((leftOOB && rightOOB && !middleOOB) || (!leftOOB && !rightOOB && !middleOOB) || middleContact) {
+        // Conditions (ORed):
+        // 1. Only MIDDLE WIB
+        // 2. All WIB
+        // 3. MIDDLE CONTACT
         LOG_DEBUG_PRINTF("Drive forward!");
         robot.drive.driveStraight(1.0f);
-    } else if (leftSide) {
+    } /*else if (leftSide) {
         LOG_DEBUG_PRINTF("Turn sharp left!");
         robot.drive.turnLeftTank(1.0f);
         data.lastSeenLeft = true;
@@ -109,7 +113,7 @@ void FollowOpponentState::update() {
         LOG_DEBUG_PRINTF("Turn sharp right!");
         robot.drive.turnRightTank(1.0f);
         data.lastSeenLeft = false;
-    } else if ((!leftOOB && rightOOB) || leftContact) {
+    }*/ else if ((!leftOOB && rightOOB) || leftContact) {
         LOG_DEBUG_PRINTF("Turn slightly left!");
         robot.drive.turnLeft(1.0f, 0.5f);
         data.lastSeenLeft = true;

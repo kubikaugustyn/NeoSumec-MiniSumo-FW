@@ -15,7 +15,7 @@
 // #define START_ROBOT_TRIGGER START_ROBOT_BUTTON
 #define START_ROBOT_TRIGGER START_ROBOT_IR_MODULE
 // The noop time after pressing the start button
-#define START_BUTTON_DELAY 5000
+#define START_BUTTON_DELAY 0
 
 // Hardware to build for - enables different pin definitions
 // Pins are then defined in include/hardware/Pins.h
