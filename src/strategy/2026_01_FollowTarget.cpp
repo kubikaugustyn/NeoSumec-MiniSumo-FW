@@ -93,8 +93,9 @@ void FollowOpponentState::update() {
             rightSide = robot.rightProximity.get()*/;
 
     // LOG_DEBUG_PRINTF("Search: %d %d %d\n", left, middle, right);
-    LOG_DEBUG_PRINTF("Search: %d %d %d %d %d", leftSide, leftOOB, middleOOB, rightOOB, rightSide);
-    // LOG_DEBUG_PRINTF("Contact: %d %d %d", leftContact, middleContact, rightContact);
+    // LOG_DEBUG_PRINTF("Search: %d %d %d %d %d", leftSide, leftOOB, middleOOB, rightOOB, rightSide);
+    LOG_DEBUG_PRINTF("Search: %d %d %d", leftOOB, middleOOB, rightOOB);
+    LOG_DEBUG_PRINTF("Contact: %d %d %d", leftContact, middleContact, rightContact);
 
     auto &data = machine.scratchRef<FollowOpponentData>();
     bool lost = false;

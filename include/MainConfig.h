@@ -25,9 +25,9 @@
 
 // The strategy to use
 // #define STRATEGY_NEOSUMEC_2025_01_KEEP_RING
-// #define STRATEGY_NEOSUMEC_2026_01_FOLLOW_TARGET
+#define STRATEGY_NEOSUMEC_2026_01_FOLLOW_TARGET
 // #define STRATEGY_NEOSUMEC_2026_02_TEST_TURNING
-#define STRATEGY_NEOSUMEC_2026_03_ROBO_STRONG
+// #define STRATEGY_NEOSUMEC_2026_03_ROBO_STRONG
 
 // Include all strategy headers. Only the single one enabled above will be compiled and used.
 #include "strategy/2025_01_KeepRing.h"
