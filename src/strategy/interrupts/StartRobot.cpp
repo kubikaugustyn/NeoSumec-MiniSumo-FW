@@ -25,6 +25,7 @@ void InterruptStartRobotState::enter() {
 void InterruptStartRobotState::update() {
 #if START_ROBOT_TRIGGER == START_ROBOT_BUTTON
     if (!robot.startButton.get()) return;
+    machine.setState<InterruptStartRobotWaitState>();
 #elif START_ROBOT_TRIGGER == START_ROBOT_IR_MODULE
     // https://p1r.se/startmodule/implement-yourself/
     auto &state = machine.sharedRef<RobotState>();
@@ -42,19 +43,17 @@ void InterruptStartRobotState::update() {
     if (state.lastIRMessage.address == 0x07) {
         // Start command
         if (state.lastIRMessage.command == (state.commandIRStartStop | 1)) {
-            // Fallthrough
+            machine.setState<InterruptStartRobotWaitState>();
+            return;
         }
         // Stop command
         else if (state.lastIRMessage.command == (state.commandIRStartStop & 0xFE)) {
             machine.setState<InterruptStopRobotState>();
             return;
         }
-        // Different "ID"
-        else return; // Ignore
+        // else: Different command "ID"
     }
 #endif
-
-    machine.setState<InterruptStartRobotWaitState>();
 }
 
 void InterruptStartRobotWaitState::enter() {
