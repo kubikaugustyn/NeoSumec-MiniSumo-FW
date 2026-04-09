@@ -5,6 +5,7 @@
 
 #include "strategy/interrupts/ProgramRobotStart.h"
 
+#if START_ROBOT_TRIGGER == START_ROBOT_IR_MODULE
 void InterruptProgramRobotStartState::enter() {
     robot.ledOrange.setOff();
     robot.ledRed.blink(250); // 2 blinks per second
@@ -15,3 +16,4 @@ void InterruptProgramRobotStartState::update() {
 
     machine.setState<InterruptStartRobotState>();
 }
+#endif
