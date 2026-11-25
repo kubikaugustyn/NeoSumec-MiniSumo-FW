@@ -19,9 +19,8 @@
 
 // Hardware to build for - enables different pin definitions
 // Pins are then defined in include/hardware/Pins.h
-#define PINOUT_SUMEC_PINS_MK3
-// #define PINOUT_NEOSUMEC_PINS_SOME_FUTURE_1
-// #define PINOUT_NEOSUMEC_PINS_SOME_FUTURE_2
+// #define PINOUT_SUMEC_PINS_MK3
+#define PINOUT_SUMEC_PINS_MK5
 
 // The strategy to use
 // #define STRATEGY_NEOSUMEC_2025_01_KEEP_RING

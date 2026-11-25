@@ -35,9 +35,17 @@ void Robot::begin() {
     rightProximity.begin(PIN_SHARP_RIGHT);
 
     Wire.begin(PIN_I2C_SDA,PIN_I2C_SCL,I2C_FREQUENCY); // Setup I2C for Luna sensors
-    frontLeftDistance.begin(I2C_ADDRESS_LUNA_LEFT);
     frontMiddleDistance.begin(I2C_ADDRESS_LUNA_MIDDLE);
+#ifdef I2C_ADDRESS_LUNA_LEFT
+    frontLeftDistance.begin(I2C_ADDRESS_LUNA_LEFT);
+#else
+    frontLeftDistance.begin(PIN_LIDAR_LEFT);
+#endif
+#ifdef I2C_ADDRESS_LUNA_RIGHT
     frontRightDistance.begin(I2C_ADDRESS_LUNA_RIGHT);
+#else
+    frontRightDistance.begin(PIN_LIDAR_RIGHT);
+#endif
 
     // TODO Figure out the handler stuff after confirming receiving even works
     // It may be a good idea to read incoming messages in a separate interrupt (higher priority than QREs)
