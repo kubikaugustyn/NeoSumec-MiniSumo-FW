@@ -3,6 +3,8 @@
 // Copyright (c) 2026 Jakub Augustýn. All rights reserved.
 //
 
+// TODO IRRemote v5 is out https://registry.platformio.org/libraries/z3t0/IRremote/installation
+
 // IRremote import and configuration
 #define RAW_BUFFER_LENGTH 100
 // These are not necessary, as we specify the protocols we want
